@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { 
-  User, CreateUserRequest, UpdateUserRequest,
+import { User, CreateUserRequest, UpdateUserRequest } from '../models/user.model';
+import {
   Post, Reel, CreatePostRequest, CreateReelRequest,
-  SentimentAnalysis, Recommendation, UserBehavior,
-  EngagementPrediction, AnalyticsDashboard
-} from '../models/user.model';
+  SentimentAnalysis, Recommendation
+} from '../models/content.model';
+import {
+  UserBehavior, EngagementPrediction, AnalyticsDashboard
+} from '../models/analytics.model';
 
 @Injectable({
   providedIn: 'root'

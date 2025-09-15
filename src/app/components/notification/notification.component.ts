@@ -50,4 +50,9 @@ export class NotificationComponent implements OnInit {
         return 'alert-primary';
     }
   }
+
+  trackByNotificationId(index: number, notification: Notification): string {
+    return notification.id;
+  }
+  
 }

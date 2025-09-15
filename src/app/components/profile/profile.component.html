@@ -34,11 +34,11 @@
               </div>
             </div>
 
-            <div class="interests mb-3" *ngIf="currentUser.preferences?.content_types?.length">
+            <div class="interests mb-3" *ngIf="currentUser?.preferences?.content_types?.length">
               <h6>Interests</h6>
               <div class="d-flex flex-wrap gap-2 justify-content-center">
                 <span 
-                  *ngFor="let interest of currentUser.preferences.content_types" 
+                  *ngFor="let interest of currentUser?.preferences?.content_types" 
                   class="badge bg-primary">
                   {{ interest }}
                 </span>
