@@ -1,0 +1,292 @@
+<div class="create-post-container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+
+      <!-- Header -->
+      <div class="create-header mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h2>
+              <i class="fa fa-plus-circle me-2"></i>
+              Create Content
+            </h2>
+            <p class="text-muted">Share your creativity with AI-powered insights</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Type Tabs -->
+      <div class="content-tabs mb-4">
+        <ul class="nav nav-pills justify-content-center">
+          <li class="nav-item">
+            <a 
+              class="nav-link" 
+              [class.active]="activeTab === 'post'"
+              (click)="switchTab('post')">
+              <i class="fa fa-file-text me-2"></i>Create Post
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link" 
+              [class.active]="activeTab === 'reel'"
+              (click)="switchTab('reel')">
+              <i class="fa fa-video-camera me-2"></i>Create Reel
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Post Form -->
+      <div *ngIf="activeTab === 'post'">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fa fa-edit me-2"></i>New Post
+            </h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="postForm" (ngSubmit)="onSubmitPost()">
+
+              <!-- Content -->
+              <div class="mb-3">
+                <label for="content" class="form-label">Content *</label>
+                <textarea 
+                  class="form-control" 
+                  id="content"
+                  formControlName="content"
+                  rows="4"
+                  placeholder="What's on your mind?"></textarea>
+                <div class="form-text text-danger" 
+                     *ngIf="postForm.get('content')?.invalid && postForm.get('content')?.touched">
+                  Content is required and must be at least 10 characters long
+                </div>
+              </div>
+
+              <!-- Category -->
+              <div class="mb-3">
+                <label for="category" class="form-label">Category *</label>
+                <select class="form-select" id="category" formControlName="category">
+                  <option value="">Select a category</option>
+                  <option *ngFor="let category of categories" [value]="category">
+                    {{ category | titlecase }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Hashtags -->
+              <div class="mb-3">
+                <label for="hashtags" class="form-label">Hashtags</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="hashtags"
+                  formControlName="hashtags"
+                  placeholder="trending, viral, awesome (comma separated)">
+                <div class="form-text">Enter hashtags separated by commas</div>
+              </div>
+
+              <!-- Media URLs -->
+              <div class="mb-3">
+                <label for="media_urls" class="form-label">Media URLs</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="media_urls"
+                  formControlName="media_urls"
+                  placeholder="https://example.com/image.jpg (comma separated)">
+                <div class="form-text">Enter image URLs separated by commas</div>
+              </div>
+
+              <!-- ML Analysis Section -->
+              <div class="ml-analysis mb-4">
+                <div class="d-flex gap-2 mb-3">
+                  <button 
+                    type="button" 
+                    class="btn btn-outline-info btn-sm"
+                    (click)="analyzeSentiment()">
+                    <i class="fa fa-brain me-1"></i>Analyze Sentiment
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn btn-outline-success btn-sm"
+                    (click)="predictEngagement()">
+                    <i class="fa fa-chart-line me-1"></i>Predict Engagement
+                  </button>
+                </div>
+
+                <!-- Sentiment Analysis Results -->
+                <div class="analysis-result" *ngIf="sentimentPrediction">
+                  <div class="alert alert-info">
+                    <h6><i class="fa fa-lightbulb me-2"></i>Sentiment Analysis</h6>
+                    <p><strong>Sentiment:</strong> {{ sentimentPrediction.sentiment.sentiment | titlecase }}</p>
+                    <p><strong>Confidence:</strong> {{ (sentimentPrediction.sentiment.score * 100) | number:'1.0-0' }}%</p>
+                    <p><strong>Predicted Engagement:</strong> {{ (sentimentPrediction.ml_insights.predicted_engagement * 100) | number:'1.1-1' }}%</p>
+                  </div>
+                </div>
+
+                <!-- Engagement Prediction Results -->
+                <div class="analysis-result" *ngIf="engagementPrediction">
+                  <div class="alert alert-success">
+                    <h6><i class="fa fa-chart-bar me-2"></i>Engagement Prediction</h6>
+                    <p><strong>Predicted Rate:</strong> {{ (engagementPrediction.predicted_engagement_rate * 100) | number:'1.1-1' }}%</p>
+                    <p><strong>Confidence:</strong> {{ (engagementPrediction.confidence_score * 100) | number:'1.0-0' }}%</p>
+                    <div class="optimization-tips">
+                      <strong>Optimization Tips:</strong>
+                      <ul class="mb-0">
+                        <li *ngFor="let suggestion of engagementPrediction.optimization_suggestions.content_improvements">
+                          {{ suggestion }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="text-center">
+                <button 
+                  type="submit" 
+                  class="btn btn-primary btn-lg"
+                  [disabled]="isLoading || postForm.invalid">
+                  <span class="spinner-border spinner-border-sm me-2" *ngIf="isLoading"></span>
+                  <i class="fa fa-paper-plane me-2" *ngIf="!isLoading"></i>
+                  {{ isLoading ? 'Creating...' : 'Create Post' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reel Form -->
+      <div *ngIf="activeTab === 'reel'">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fa fa-video-camera me-2"></i>New Reel
+            </h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="reelForm" (ngSubmit)="onSubmitReel()">
+
+              <!-- Title -->
+              <div class="mb-3">
+                <label for="title" class="form-label">Title *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="title"
+                  formControlName="title"
+                  placeholder="Enter an engaging title">
+              </div>
+
+              <!-- Description -->
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea 
+                  class="form-control" 
+                  id="description"
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Describe your reel..."></textarea>
+              </div>
+
+              <!-- Category -->
+              <div class="mb-3">
+                <label for="reel-category" class="form-label">Category *</label>
+                <select class="form-select" id="reel-category" formControlName="category">
+                  <option value="">Select a category</option>
+                  <option *ngFor="let category of categories" [value]="category">
+                    {{ category | titlecase }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Video URL -->
+              <div class="mb-3">
+                <label for="video_url" class="form-label">Video URL *</label>
+                <input 
+                  type="url" 
+                  class="form-control" 
+                  id="video_url"
+                  formControlName="video_url"
+                  placeholder="https://example.com/video.mp4">
+              </div>
+
+              <!-- Thumbnail URL -->
+              <div class="mb-3">
+                <label for="thumbnail_url" class="form-label">Thumbnail URL</label>
+                <input 
+                  type="url" 
+                  class="form-control" 
+                  id="thumbnail_url"
+                  formControlName="thumbnail_url"
+                  placeholder="https://example.com/thumbnail.jpg">
+              </div>
+
+              <!-- Duration -->
+              <div class="mb-3">
+                <label for="duration" class="form-label">Duration (seconds)</label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="duration"
+                  formControlName="duration"
+                  min="5"
+                  max="300"
+                  placeholder="30">
+              </div>
+
+              <!-- Hashtags -->
+              <div class="mb-3">
+                <label for="reel-hashtags" class="form-label">Hashtags</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="reel-hashtags"
+                  formControlName="hashtags"
+                  placeholder="reels, viral, fyp (comma separated)">
+              </div>
+
+              <!-- Music ID -->
+              <div class="mb-3">
+                <label for="music_id" class="form-label">Music ID</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="music_id"
+                  formControlName="music_id"
+                  placeholder="music_123">
+              </div>
+
+              <!-- Effects -->
+              <div class="mb-3">
+                <label for="effects" class="form-label">Effects</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="effects"
+                  formControlName="effects"
+                  placeholder="slow_motion, filter (comma separated)">
+              </div>
+
+              <!-- Submit Button -->
+              <div class="text-center">
+                <button 
+                  type="submit" 
+                  class="btn btn-danger btn-lg"
+                  [disabled]="isLoading || reelForm.invalid">
+                  <span class="spinner-border spinner-border-sm me-2" *ngIf="isLoading"></span>
+                  <i class="fa fa-video-camera me-2" *ngIf="!isLoading"></i>
+                  {{ isLoading ? 'Creating...' : 'Create Reel' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

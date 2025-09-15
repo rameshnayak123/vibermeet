@@ -1,0 +1,102 @@
+.notification-container {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 1050;
+  max-width: 400px;
+  width: 100%;
+}
+
+.notification-item {
+  margin-bottom: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.3s ease-out;
+
+  .notification-content {
+    .notification-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .notification-message {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+  }
+
+  .btn-close {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .notification-time {
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// Responsive design
+@media (max-width: 576px) {
+  .notification-container {
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+
+  .notification-item {
+    font-size: 0.9rem;
+
+    .notification-content {
+      .notification-title {
+        font-size: 1rem;
+      }
+
+      .notification-message {
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+// Custom alert styles
+.alert-success {
+  background: rgba(40, 167, 69, 0.95);
+  color: white;
+  border-left: 4px solid #28a745;
+}
+
+.alert-danger {
+  background: rgba(220, 53, 69, 0.95);
+  color: white;
+  border-left: 4px solid #dc3545;
+}
+
+.alert-warning {
+  background: rgba(255, 193, 7, 0.95);
+  color: #212529;
+  border-left: 4px solid #ffc107;
+}
+
+.alert-info {
+  background: rgba(23, 162, 184, 0.95);
+  color: white;
+  border-left: 4px solid #17a2b8;
+}

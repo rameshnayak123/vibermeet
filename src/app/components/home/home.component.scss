@@ -1,0 +1,78 @@
+.home-container {
+  padding: 2rem 0;
+  min-height: calc(100vh - 80px);
+}
+
+.welcome-section {
+  .card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+  }
+
+  .btn-primary {
+    background: white;
+    color: #667eea;
+    border: none;
+
+    &:hover {
+      background: #f8f9fa;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.recommendations-section {
+  .card-header {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+  }
+
+  .badge {
+    font-size: 0.9rem;
+    background: linear-gradient(45deg, #667eea, #764ba2) !important;
+  }
+}
+
+.content-tabs {
+  .nav-pills {
+    .nav-link {
+      color: #667eea;
+      font-weight: 600;
+      border-radius: 25px;
+      margin: 0 0.5rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+      }
+
+      &.active {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+      }
+    }
+  }
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1rem 0;
+  }
+
+  .content-tabs {
+    .nav-pills {
+      .nav-link {
+        margin: 0 0.25rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

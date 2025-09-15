@@ -1,0 +1,79 @@
+<div class="reels-container">
+  <div class="row">
+    <div class="col-lg-10 col-md-12 mx-auto">
+
+      <!-- Header -->
+      <div class="reels-header mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h2>
+              <i class="fa fa-video-camera me-2"></i>
+              Reels
+            </h2>
+            <p class="text-muted">Discover amazing short videos from creators</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="category-filter mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h6 class="mb-3">
+              <i class="fa fa-filter me-2"></i>Filter by Category
+            </h6>
+            <div class="d-flex flex-wrap gap-2">
+              <button 
+                *ngFor="let category of categories"
+                type="button"
+                class="btn btn-sm"
+                [class.btn-primary]="selectedCategory === category"
+                [class.btn-outline-primary]="selectedCategory !== category"
+                (click)="onCategoryChange(category)">
+                {{ category | titlecase }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div class="text-center py-5" *ngIf="isLoading">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <p class="mt-2">Loading reels...</p>
+      </div>
+
+      <!-- No Reels Message -->
+      <div *ngIf="!isLoading && reels.length === 0" class="text-center py-5">
+        <i class="fa fa-video-camera fa-3x text-muted mb-3"></i>
+        <h5>No reels found</h5>
+        <p class="text-muted">
+          {{ selectedCategory && selectedCategory !== 'all' ? 
+             'No reels found in this category.' : 
+             'No reels available at the moment.' }}
+        </p>
+        <a routerLink="/create" class="btn btn-primary">
+          <i class="fa fa-plus me-2"></i>Create Your First Reel
+        </a>
+      </div>
+
+      <!-- Reels Grid -->
+      <div class="reels-grid" *ngIf="!isLoading && reels.length > 0">
+        <app-reel-card 
+          *ngFor="let reel of reels; trackBy: trackByReelId" 
+          [reel]="reel"
+          (like)="onLike($event)"
+          (share)="onShare($event)">
+        </app-reel-card>
+      </div>
+
+      <!-- Load More Button -->
+      <div class="text-center mt-4" *ngIf="!isLoading && reels.length > 0">
+        <button class="btn btn-outline-primary" (click)="loadReels(selectedCategory)">
+          <i class="fa fa-refresh me-2"></i>Load More Reels
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

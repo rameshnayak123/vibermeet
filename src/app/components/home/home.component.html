@@ -1,0 +1,115 @@
+<div class="home-container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+
+      <!-- Welcome Section -->
+      <div class="welcome-section mb-4" *ngIf="!apiService.getCurrentUser()">
+        <div class="card text-center">
+          <div class="card-body p-4">
+            <h2 class="card-title">
+              <i class="fa fa-rocket me-2"></i>
+              Welcome to Social Media Platform
+            </h2>
+            <p class="card-text">
+              Discover amazing content powered by AI and machine learning. 
+              Create your profile to get personalized recommendations!
+            </p>
+            <a routerLink="/profile" class="btn btn-primary btn-lg">
+              <i class="fa fa-user-plus me-2"></i>Get Started
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommendations Section -->
+      <div class="recommendations-section mb-4" *ngIf="recommendations.length > 0">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fa fa-magic me-2"></i>
+              AI Recommendations for You
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2">
+              <span 
+                *ngFor="let category of recommendations" 
+                class="badge bg-primary rounded-pill px-3 py-2">
+                {{ category }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Tabs -->
+      <div class="content-tabs mb-4">
+        <ul class="nav nav-pills justify-content-center">
+          <li class="nav-item">
+            <a 
+              class="nav-link" 
+              [class.active]="activeTab === 'posts'"
+              (click)="switchTab('posts')">
+              <i class="fa fa-file-text me-2"></i>Posts
+            </a>
+          </li>
+          <li class="nav-item">
+            <a 
+              class="nav-link" 
+              [class.active]="activeTab === 'reels'"
+              (click)="switchTab('reels')">
+              <i class="fa fa-video-camera me-2"></i>Reels
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Loading Spinner -->
+      <div class="text-center py-5" *ngIf="isLoading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading content...</p>
+      </div>
+
+      <!-- Posts Tab -->
+      <div *ngIf="activeTab === 'posts' && !isLoading">
+        <div *ngIf="posts.length === 0" class="text-center py-5">
+          <i class="fa fa-inbox fa-3x text-muted mb-3"></i>
+          <h5>No posts available</h5>
+          <p class="text-muted">Be the first to create some content!</p>
+          <a routerLink="/create" class="btn btn-primary">
+            <i class="fa fa-plus me-2"></i>Create Post
+          </a>
+        </div>
+
+        <app-post-card 
+          *ngFor="let post of posts" 
+          [post]="post"
+          (like)="onLike($event, 'post')"
+          (share)="onShare($event, 'post')">
+        </app-post-card>
+      </div>
+
+      <!-- Reels Tab -->
+      <div *ngIf="activeTab === 'reels' && !isLoading">
+        <div *ngIf="reels.length === 0" class="text-center py-5">
+          <i class="fa fa-video-camera fa-3x text-muted mb-3"></i>
+          <h5>No reels available</h5>
+          <p class="text-muted">Create some short video content!</p>
+          <a routerLink="/create" class="btn btn-primary">
+            <i class="fa fa-video-camera me-2"></i>Create Reel
+          </a>
+        </div>
+
+        <app-reel-card 
+          *ngFor="let reel of reels" 
+          [reel]="reel"
+          (like)="onLike($event, 'reel')"
+          (share)="onShare($event, 'reel')">
+        </app-reel-card>
+      </div>
+
+    </div>
+  </div>
+</div>

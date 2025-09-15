@@ -1,0 +1,126 @@
+<div class="reel-card card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="user-info d-flex align-items-center">
+      <div class="avatar me-3">
+        <i class="fa fa-user-circle fa-2x text-primary"></i>
+      </div>
+      <div>
+        <h6 class="mb-0">{{ reel.username }}</h6>
+        <small class="text-muted">{{ formatDate(reel.created_at) }}</small>
+      </div>
+    </div>
+    <div class="reel-badges">
+      <span class="badge bg-danger me-2">
+        <i class="fa fa-video-camera me-1"></i>Reel
+      </span>
+      <span class="badge bg-secondary">{{ reel.category }}</span>
+    </div>
+  </div>
+
+  <div class="video-container position-relative">
+    <div class="video-placeholder">
+      <img 
+        [src]="reel.thumbnail_url || 'assets/default-thumbnail.jpg'" 
+        class="img-fluid w-100"
+        alt="Video thumbnail"
+        style="height: 300px; object-fit: cover;">
+
+      <div class="video-overlay">
+        <div class="play-button">
+          <i class="fa fa-play fa-3x text-white"></i>
+        </div>
+        <div class="duration-badge">
+          {{ formatDuration(reel.duration) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <h6 class="card-title">{{ reel.title }}</h6>
+    <p class="card-text" *ngIf="reel.description">{{ reel.description }}</p>
+
+    <!-- Hashtags and Effects -->
+    <div class="tags-container mb-3">
+      <div class="hashtags mb-2" *ngIf="reel.hashtags && reel.hashtags.length > 0">
+        <span 
+          *ngFor="let hashtag of reel.hashtags" 
+          class="badge bg-light text-primary me-1">
+          #{{ hashtag }}
+        </span>
+      </div>
+
+      <div class="effects" *ngIf="reel.effects && reel.effects.length > 0">
+        <small class="text-muted">Effects: </small>
+        <span 
+          *ngFor="let effect of reel.effects; let last = last" 
+          class="text-muted">
+          {{ effect }}<span *ngIf="!last">, </span>
+        </span>
+      </div>
+    </div>
+
+    <!-- ML Analytics -->
+    <div class="ml-analytics">
+      <div class="row g-2">
+        <div class="col-6">
+          <div class="analytics-card">
+            <div class="d-flex align-items-center">
+              <i class="fa fa-chart-line me-2 text-success"></i>
+              <div>
+                <small class="text-muted d-block">Engagement</small>
+                <strong class="engagement" [ngClass]="getEngagementClass()">
+                  {{ (reel.engagement_rate * 100) | number:'1.1-1' }}%
+                </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="analytics-card">
+            <div class="d-flex align-items-center">
+              <i class="fa fa-eye me-2 text-info"></i>
+              <div>
+                <small class="text-muted d-block">Views</small>
+                <strong>{{ reel.views | number }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="reel-actions d-flex justify-content-between align-items-center">
+      <div class="engagement-stats d-flex">
+        <span class="me-3">
+          <i class="fa fa-heart text-danger me-1"></i>
+          {{ reel.likes | number }}
+        </span>
+        <span class="me-3">
+          <i class="fa fa-comment text-primary me-1"></i>
+          {{ reel.comments | number }}
+        </span>
+        <span>
+          <i class="fa fa-share text-success me-1"></i>
+          {{ reel.shares | number }}
+        </span>
+      </div>
+
+      <div class="action-buttons">
+        <button 
+          class="btn btn-sm btn-outline-danger me-2" 
+          (click)="onLike()">
+          <i class="fa fa-heart me-1"></i>Like
+        </button>
+        <button 
+          class="btn btn-sm btn-outline-success" 
+          (click)="onShare()">
+          <i class="fa fa-share me-1"></i>Share
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

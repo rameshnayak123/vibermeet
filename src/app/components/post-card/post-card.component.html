@@ -1,0 +1,85 @@
+<div class="post-card card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="user-info d-flex align-items-center">
+      <div class="avatar me-3">
+        <i class="fa fa-user-circle fa-2x text-primary"></i>
+      </div>
+      <div>
+        <h6 class="mb-0">{{ post.username }}</h6>
+        <small class="text-muted">{{ formatDate(post.created_at) }}</small>
+      </div>
+    </div>
+    <div class="category-badge">
+      <span class="badge bg-secondary">{{ post.category }}</span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <p class="card-text">{{ post.content }}</p>
+
+    <!-- Media -->
+    <div class="media-container" *ngIf="post.media_urls && post.media_urls.length > 0">
+      <img 
+        *ngFor="let mediaUrl of post.media_urls" 
+        [src]="mediaUrl" 
+        class="img-fluid rounded mb-2"
+        alt="Post media">
+    </div>
+
+    <!-- Hashtags -->
+    <div class="hashtags mb-3" *ngIf="post.hashtags && post.hashtags.length > 0">
+      <span 
+        *ngFor="let hashtag of post.hashtags" 
+        class="badge bg-light text-primary me-1">
+        #{{ hashtag }}
+      </span>
+    </div>
+
+    <!-- ML Insights -->
+    <div class="ml-insights mb-3">
+      <div class="d-flex align-items-center">
+        <i 
+          class="fa me-2" 
+          [ngClass]="getSentimentIcon()"
+          [style.color]="getSentimentColor()">
+        </i>
+        <small class="text-muted">
+          AI Sentiment: {{ post.sentiment_analysis.sentiment | titlecase }}
+          ({{ (post.sentiment_analysis.score * 100) | number:'1.0-0' }}%)
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="post-actions d-flex justify-content-between align-items-center">
+      <div class="engagement-stats d-flex">
+        <span class="me-3">
+          <i class="fa fa-heart text-danger me-1"></i>
+          {{ post.likes }}
+        </span>
+        <span class="me-3">
+          <i class="fa fa-comment text-primary me-1"></i>
+          {{ post.comments }}
+        </span>
+        <span>
+          <i class="fa fa-share text-success me-1"></i>
+          {{ post.shares }}
+        </span>
+      </div>
+
+      <div class="action-buttons">
+        <button 
+          class="btn btn-sm btn-outline-danger me-2" 
+          (click)="onLike()">
+          <i class="fa fa-heart me-1"></i>Like
+        </button>
+        <button 
+          class="btn btn-sm btn-outline-success" 
+          (click)="onShare()">
+          <i class="fa fa-share me-1"></i>Share
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
