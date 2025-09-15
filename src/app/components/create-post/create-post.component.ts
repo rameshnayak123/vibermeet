@@ -23,10 +23,10 @@ export class CreatePostComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder,
-    private apiService: ApiService,
-    private notificationService: NotificationService,
-    private router: Router
+    public fb: FormBuilder,
+    public apiService: ApiService,
+    public notificationService: NotificationService,
+    public router: Router
   ) {
     this.postForm = this.fb.group({
       content: ['', [Validators.required, Validators.minLength(10)]],

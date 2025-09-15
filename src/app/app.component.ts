@@ -13,8 +13,8 @@ export class AppComponent implements OnInit {
   currentUser: User | null = null;
 
   constructor(
-    private apiService: ApiService,
-    private notificationService: NotificationService
+    public apiService: ApiService,
+    public notificationService: NotificationService
   ) {}
 
   ngOnInit() {

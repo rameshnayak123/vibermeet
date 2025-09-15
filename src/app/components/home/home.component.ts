@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit {
   activeTab = 'posts';
 
   constructor(
-    private apiService: ApiService,
-    private notificationService: NotificationService
+    public apiService: ApiService,
+    public notificationService: NotificationService
   ) {}
 
   ngOnInit() {

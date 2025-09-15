@@ -21,9 +21,9 @@ export class ProfileComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder,
-    private apiService: ApiService,
-    private notificationService: NotificationService
+    public fb: FormBuilder,
+    public apiService: ApiService,
+    public notificationService: NotificationService
   ) {
     this.profileForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],

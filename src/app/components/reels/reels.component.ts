@@ -19,8 +19,8 @@ export class ReelsComponent implements OnInit {
   ];
 
   constructor(
-    private apiService: ApiService,
-    private notificationService: NotificationService
+    public apiService: ApiService,
+    public notificationService: NotificationService
   ) {}
 
   ngOnInit() {

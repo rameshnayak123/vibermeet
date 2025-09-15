@@ -13,8 +13,8 @@ export class NavbarComponent implements OnInit {
   isMenuOpen = false;
 
   constructor(
-    private apiService: ApiService,
-    private router: Router
+    public apiService: ApiService,
+    public router: Router
   ) {}
 
   ngOnInit() {

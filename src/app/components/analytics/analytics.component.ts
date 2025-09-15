@@ -16,9 +16,9 @@ export class AnalyticsComponent implements OnInit {
   currentUser: any = null;
 
   constructor(
-    private apiService: ApiService,
-    private notificationService: NotificationService,
-    private router: Router
+    public apiService: ApiService,
+    public notificationService: NotificationService,
+    public router: Router
   ) {}
 
   ngOnInit() {
